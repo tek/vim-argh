@@ -45,11 +45,24 @@ function! s:process() "{{{
   endif
 endfunction "}}}
 
+function! s:update_tick() "{{{
+  let g:repeat_tick = b:changedtick
+  autocmd! repeat_tick
+endfunction "}}} 
+  
+function! s:repeat_set() "{{{
+  let cmd = v:operator.s:mode.'a' . (v:operator == 'c' ? "\<c-r>." : '')
+  silent! call repeat#set(cmd)
+  augroup repeat_tick
+    autocmd!
+    autocmd CursorMoved <buffer> call s:update_tick()
+  augroup END
+endfunction "}}}
+
 function! argh#process(mode) "{{{
   let s:mode = a:mode
   let s:comma_left = 0
   let s:vcount = v:count1
   call s:process()
-  silent! call repeat#set(v:operator.a:mode.'a')
-  let g:repeat_tick += 1
+  call s:repeat_set()
 endfunction "}}}
