@@ -49,7 +49,7 @@ function! s:update_tick() "{{{
   let g:repeat_tick = b:changedtick
   autocmd! repeat_tick
 endfunction "}}} 
-  
+
 function! s:repeat_set() "{{{
   let cmd = v:operator.s:mode.'a' . (v:operator == 'c' ? "\<c-r>." : '')
   silent! call repeat#set(cmd)
